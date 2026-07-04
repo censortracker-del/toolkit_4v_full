@@ -1,9 +1,9 @@
 {
   "toolkit_name": "agent-wiki-toolkit",
-  "distribution_version": "4.0.1",
+  "distribution_version": "4.0.2",
   "protocol_version": 4,
   "router_version": 3,
-  "raw_base_url": "https://raw.githubusercontent.com/censortracker-del/toolkit_4v/main/",
+  "raw_base_url": "https://raw.githubusercontent.com/censortracker-del/toolkit_4v_full/main/",
   "entry_point": "START.md",
   "token_policy": "fetch MANIFEST.json first; fetch the entry set (entry_rules.always; orchestrated flows also entry_rules.orchestrated_flows_add); follow intake/ROUTER.md; then fetch only files_to_fetch; never fetch core/PRINCIPLES_MAX.md unless selected",
   "core_purity_rule": "core/, intake/, blocks/, schemas/, START.md, MANIFEST.json are domain-agnostic; domain content lives only in playbooks/ and adapters/; agents must refuse to add domain content to core",
@@ -239,7 +239,8 @@
       "b2.4: Codex round-4 F1-F3 fixed (structured hard_overrides[] in schema+ROUTER+validator, protocol const checks, full structural mirroring of do_not_fetch/blocks)",
       "b2.5: Codex round-5 F1-F2 fixed (START/token_policy exempt routing infrastructure from only-files_to_fetch rule; stdlib mirrors uniqueItems and additionalProperties)",
       "b2.6=4.0: Codex verdict SHIP on b2.5; post-ship P2 crash guard on slot_sources type",
-      "4.0.1: repo moved to toolkit_4v — raw_base_url switched; carried v3 files restored after migration loss"
+      "4.0.1: repo moved to toolkit_4v — raw_base_url switched; carried v3 files restored after migration loss",
+      "4.0.2: final home = toolkit_4v_full; raw_base_url updated"
     ],
     "pending_batch_3": [
       "playbooks (sql_oracle, research_osint, writing_docs)",

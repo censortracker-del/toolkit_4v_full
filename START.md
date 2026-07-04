@@ -1,7 +1,7 @@
 # START.md — Agent Wiki Toolkit v4 bootstrap
 
 `toolkit_version: 4.0-draft` · `protocol_version: 4`
-`raw_base_url: https://raw.githubusercontent.com/censortracker-del/toolkit_4v/main/`
+`raw_base_url: https://raw.githubusercontent.com/censortracker-del/toolkit_4v_full/main/`
 
 Paste this file into any AI agent (Claude / Codex / local model) together with the
 project idea. Nothing else is required from the user except the idea itself.
