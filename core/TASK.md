@@ -24,7 +24,8 @@ memory. Selected by ROUTER when strictness < 15 and no hard override fires.
   derived judgements with confidence.
 - No invention: a value absent from the inputs is `unknown`, not a guess.
 - Read-only by default: TASK tier never moves / renames / deletes / mutates
-  sources or writes to DBs. If that need appears mid-task — stop, report, and
+  sources or writes to DBs. Creating NEW deliverable files in the agreed
+  output location is allowed and is not a destructive operation. If that need appears mid-task — stop, report, and
   re-route upward (this is a tier violation, not a judgement call).
 - No secrets anywhere. No unconfirmed paid/large LLM runs.
 

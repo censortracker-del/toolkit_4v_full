@@ -77,7 +77,7 @@ Rules:
 1. Project duration: one-off = 0 · days/weeks = 5 · months/long-running = 10
 2. Source volume/complexity: <20 items simple = 0 · 20–500 or mixed formats = 8 · 500+/DB/API/pipeline = 15
 3. Corpus size: <100 MB = 0 · 100 MB–5 GB = 5 · 5–100 GB = 12 · >100 GB = 20
-4. Destructive operations: none/read-only = 0 · file generation/overwrite = 10 · move/rename/delete/DB writes = 25
+4. Destructive operations: none / read-only / NEW deliverable files in the agreed output location = 0 · overwrite or reorganize EXISTING user files = 10 · move/rename/delete sources, DB/API writes = 25
 5. Data loss / money / legal / business risk: none = 0 · inconvenient = 10 · serious/legal/financial/reputational = 25
 6. Provenance / citations / audit need: casual = 0 · useful = 10 · mandatory evidence + review trail = 20
 7. Automation / API / repeated pipeline: manual chat = 0 · repeated/simple scripts = 10 · API/DB/expensive LLM/idempotency = 20
@@ -138,7 +138,12 @@ set `independence_gap: true`.
 
 ## Output format
 
-JSON first, then the short human summary (user language). Orchestrated flows
+Always produce the full JSON — it is the validator's input and the audit
+trail. User-facing display depends on tier: for `TASK` with empty
+`hard_overrides` show ONLY a 2–3 line summary in the user language (type,
+tier/role, risk level, what happens next) and keep the JSON internal unless
+the user asks; for `LITE`/`MAX`/recovery show JSON first, then the short
+human summary (user language). Orchestrated flows
 MUST fetch `tools/validate_router_output.py` + `schemas/ROUTER_OUTPUT_SCHEMA.json`
 (MANIFEST `entry_rules.orchestrated_flows_add`) alongside this router and run the validator on this JSON (structural checks,
 sums, tier/role cuts, hard overrides, safety floor) — fail closed. In manual
@@ -179,7 +184,8 @@ chat the agent self-applies the same checks before fetching.
   },
   "assumptions": [
     "S4=0 — user confirmed no source photo mutation",
-    "stack: static site generator chosen by agent"
+    "stack: static site generator chosen by agent",
+    "I4=0 — single engine in this run (stated)"
   ],
   "corpus_size_hint": "small",
   "files_to_fetch": [

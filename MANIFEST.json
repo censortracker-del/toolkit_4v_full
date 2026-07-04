@@ -1,6 +1,6 @@
 {
   "toolkit_name": "agent-wiki-toolkit",
-  "distribution_version": "4.0.2",
+  "distribution_version": "4.0.3",
   "protocol_version": 4,
   "router_version": 3,
   "raw_base_url": "https://raw.githubusercontent.com/censortracker-del/toolkit_4v_full/main/",
@@ -115,7 +115,8 @@
     "USER_PROFILE.md": {
       "type": "profile",
       "purpose": "durable intake defaults; fallback: ask all questions",
-      "status": "pending_v4_rewrite"
+      "status": "pending_v4_rewrite",
+      "note": "pending_v4_rewrite, but current content is valid for v4 routing defaults"
     },
     "intake/ROUTER.md": {
       "type": "intake",
@@ -240,7 +241,8 @@
       "b2.5: Codex round-5 F1-F2 fixed (START/token_policy exempt routing infrastructure from only-files_to_fetch rule; stdlib mirrors uniqueItems and additionalProperties)",
       "b2.6=4.0: Codex verdict SHIP on b2.5; post-ship P2 crash guard on slot_sources type",
       "4.0.1: repo moved to toolkit_4v — raw_base_url switched; carried v3 files restored after migration loss",
-      "4.0.2: final home = toolkit_4v_full; raw_base_url updated"
+      "4.0.2: final home = toolkit_4v_full; raw_base_url updated",
+      "4.0.3: live-test UX patch — compact TASK output mode, S4 anchors reworded (new deliverables != destructive), TASK.md explicit allowance, USER_PROFILE validity note, example I4 assumption"
     ],
     "pending_batch_3": [
       "playbooks (sql_oracle, research_osint, writing_docs)",
