@@ -105,6 +105,10 @@ preference must never silently drop a high-stakes project down a role_mode tier.
   the playbook if the day's task benefits from one.
 - `recovery_needed` (corrupt context / missing adapter / old schema) → fetch
   `core/PRINCIPLES_MAX.md`; set `bootstrap_tier: MAX`.
+- User implies continuation ("продолжаем", "continue this project") but no
+  `Agent_Wiki/` exists at the confirmed root → do NOT improvise continuity and
+  do NOT scan parent/sibling directories; ask the user for the correct path,
+  or confirm starting as `new_project`.
 
 `bootstrap_tier` for `new_project`:
 
