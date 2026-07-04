@@ -1,0 +1,498 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Agent Wiki Source Inventory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "entry_mode",
+    "agent_wiki_detected",
+    "bootstrap_mode",
+    "bootstrap_tier",
+    "daily_loop_file",
+    "role_mode",
+    "project_type_hypothesis",
+    "source_inventory",
+    "corpus_profile",
+    "source_of_truth_candidates",
+    "item_definition_candidates",
+    "risk_assessment",
+    "retrieval_strategy",
+    "large_corpus_controls",
+    "tooling_recommendation",
+    "adapter_draft",
+    "questions_for_user",
+    "files_to_fetch",
+    "recommended_next_action"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "entry_mode": {
+      "type": "string",
+      "const": "file_driven"
+    },
+    "agent_wiki_detected": {
+      "type": "boolean"
+    },
+    "bootstrap_mode": {
+      "type": "string",
+      "enum": [
+        "new_project",
+        "existing_agent_wiki",
+        "recovery_needed"
+      ]
+    },
+    "bootstrap_tier": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "LITE",
+        "MAX",
+        null
+      ]
+    },
+    "daily_loop_file": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "core/PRINCIPLES_MINI.md",
+        null
+      ]
+    },
+    "role_mode": {
+      "type": "string",
+      "enum": [
+        "SOLO",
+        "DUAL",
+        "FULL"
+      ]
+    },
+    "project_type_hypothesis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "confidence",
+        "evidence"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "enum": [
+            "research",
+            "code",
+            "dataset",
+            "legal",
+            "book",
+            "analytics",
+            "business_docs",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/string_list"
+        }
+      }
+    },
+    "source_inventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_files_seen",
+        "file_types",
+        "important_files",
+        "large_files_not_read",
+        "ignored_files"
+      ],
+      "properties": {
+        "total_files_seen": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "file_types": {
+          "$ref": "#/$defs/string_list"
+        },
+        "important_files": {
+          "$ref": "#/$defs/string_list"
+        },
+        "large_files_not_read": {
+          "$ref": "#/$defs/string_list"
+        },
+        "ignored_files": {
+          "$ref": "#/$defs/string_list"
+        }
+      }
+    },
+    "corpus_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "estimated_total_size",
+        "estimated_file_count",
+        "dominant_file_types",
+        "largest_files",
+        "compressed_archives_detected",
+        "database_dumps_detected",
+        "ocr_likely_needed",
+        "privacy_sensitivity",
+        "update_frequency"
+      ],
+      "properties": {
+        "estimated_total_size": {
+          "type": "string"
+        },
+        "estimated_file_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "dominant_file_types": {
+          "$ref": "#/$defs/string_list"
+        },
+        "largest_files": {
+          "$ref": "#/$defs/string_list"
+        },
+        "compressed_archives_detected": {
+          "type": "boolean"
+        },
+        "database_dumps_detected": {
+          "type": "boolean"
+        },
+        "ocr_likely_needed": {
+          "type": "boolean"
+        },
+        "privacy_sensitivity": {
+          "type": "string",
+          "enum": [
+            "unknown",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "update_frequency": {
+          "type": "string",
+          "enum": [
+            "unknown",
+            "static",
+            "periodic",
+            "continuous"
+          ]
+        }
+      }
+    },
+    "source_of_truth_candidates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/candidate"
+      }
+    },
+    "item_definition_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "item",
+          "stable_id_strategy",
+          "confidence"
+        ],
+        "properties": {
+          "item": {
+            "type": "string"
+          },
+          "stable_id_strategy": {
+            "type": "string"
+          },
+          "confidence": {
+            "$ref": "#/$defs/confidence"
+          }
+        }
+      }
+    },
+    "risk_assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "data_loss_risk",
+        "destructive_ops_likely",
+        "external_sources_needed",
+        "provenance_required",
+        "audit_required",
+        "reasoning"
+      ],
+      "properties": {
+        "data_loss_risk": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "destructive_ops_likely": {
+          "type": "boolean"
+        },
+        "external_sources_needed": {
+          "type": "boolean"
+        },
+        "provenance_required": {
+          "type": "boolean"
+        },
+        "audit_required": {
+          "type": "boolean"
+        },
+        "reasoning": {
+          "type": "string"
+        }
+      }
+    },
+    "retrieval_strategy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recommended_mode",
+        "reasoning",
+        "rag_needed",
+        "agent_wiki_needed",
+        "indexing_required_before_analysis",
+        "requires_corpus_intake_plan"
+      ],
+      "properties": {
+        "recommended_mode": {
+          "type": "string",
+          "enum": [
+            "agent_wiki_only",
+            "rag_index",
+            "hybrid",
+            "manual_review_first"
+          ]
+        },
+        "reasoning": {
+          "type": "string"
+        },
+        "rag_needed": {
+          "type": "boolean"
+        },
+        "agent_wiki_needed": {
+          "type": "boolean"
+        },
+        "indexing_required_before_analysis": {
+          "type": "boolean"
+        },
+        "requires_corpus_intake_plan": {
+          "type": "boolean"
+        }
+      }
+    },
+    "large_corpus_controls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "do_not_read_all_files",
+        "sample_before_processing",
+        "dedup_required",
+        "hash_inventory_required",
+        "ocr_pipeline_required",
+        "human_confirmation_required_before_indexing"
+      ],
+      "properties": {
+        "do_not_read_all_files": {
+          "type": "boolean"
+        },
+        "sample_before_processing": {
+          "type": "boolean"
+        },
+        "dedup_required": {
+          "type": "boolean"
+        },
+        "hash_inventory_required": {
+          "type": "boolean"
+        },
+        "ocr_pipeline_required": {
+          "type": "boolean"
+        },
+        "human_confirmation_required_before_indexing": {
+          "type": "boolean"
+        }
+      }
+    },
+    "tooling_recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mcp_needed",
+        "recommended_servers",
+        "reasoning",
+        "mutation_allowed",
+        "requires_user_confirmation"
+      ],
+      "properties": {
+        "mcp_needed": {
+          "type": "boolean"
+        },
+        "recommended_servers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "github",
+              "filesystem",
+              "database",
+              "browser_search",
+              "issue_tracker",
+              "document_store",
+              "none"
+            ]
+          }
+        },
+        "reasoning": {
+          "type": "string"
+        },
+        "mutation_allowed": {
+          "type": "boolean"
+        },
+        "requires_user_confirmation": {
+          "type": "boolean"
+        }
+      }
+    },
+    "adapter_draft": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_of_truth_path",
+        "item_definition",
+        "index_columns",
+        "counts_tracked",
+        "lifecycle_statuses",
+        "domain_safety_rules",
+        "output_types",
+        "claude_review_triggers",
+        "opencode_review_triggers",
+        "language_conventions"
+      ],
+      "properties": {
+        "source_of_truth_path": {
+          "type": "string"
+        },
+        "item_definition": {
+          "type": "string"
+        },
+        "index_columns": {
+          "$ref": "#/$defs/string_list"
+        },
+        "counts_tracked": {
+          "$ref": "#/$defs/string_list"
+        },
+        "lifecycle_statuses": {
+          "$ref": "#/$defs/string_list"
+        },
+        "domain_safety_rules": {
+          "$ref": "#/$defs/string_list"
+        },
+        "output_types": {
+          "$ref": "#/$defs/string_list"
+        },
+        "claude_review_triggers": {
+          "$ref": "#/$defs/string_list"
+        },
+        "opencode_review_triggers": {
+          "$ref": "#/$defs/string_list"
+        },
+        "language_conventions": {
+          "type": "string"
+        }
+      }
+    },
+    "questions_for_user": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "question",
+          "why_needed",
+          "blocks_bootstrap"
+        ],
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "why_needed": {
+            "type": "string"
+          },
+          "blocks_bootstrap": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "files_to_fetch": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/fetchable_file"
+      }
+    },
+    "recommended_next_action": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "confidence": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "string_list": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "reason",
+        "confidence"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        }
+      }
+    },
+    "fetchable_file": {
+      "type": "string",
+      "enum": [
+        "core/LITE.md",
+        "core/PRINCIPLES_MAX.md",
+        "core/PRINCIPLES_MINI.md",
+        "USER_PROFILE.md",
+        "project_notes/BOOK_PROJECT_NOTES.md",
+        "orchestration/MCP_INTEGRATION.md",
+        "orchestration/STORAGE_RETRIEVAL_STRATEGY.md",
+        "scenarios/MANUAL_CHAT_HANDOFF.md",
+        "scenarios/API_SIMPLE_FLOW.md",
+        "scenarios/API_ORCHESTRATED_FLOW.md"
+      ]
+    }
+  }
+}

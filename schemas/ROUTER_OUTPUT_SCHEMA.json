@@ -1,0 +1,824 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Agent Wiki Router Output v3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "router_version",
+    "protocol_version",
+    "entry_mode",
+    "task_type",
+    "task_type_confidence",
+    "playbook",
+    "blocks",
+    "bootstrap_mode",
+    "bootstrap_tier",
+    "daily_loop_file",
+    "role_mode",
+    "hard_overrides",
+    "strictness_score",
+    "independence_score",
+    "strictness_breakdown",
+    "independence_breakdown",
+    "clarified_task",
+    "assumptions",
+    "corpus_size_hint",
+    "files_to_fetch",
+    "do_not_fetch",
+    "reason",
+    "independence_gap",
+    "next_action"
+  ],
+  "properties": {
+    "router_version": {
+      "type": "integer",
+      "const": 3
+    },
+    "protocol_version": {
+      "type": "integer",
+      "const": 4
+    },
+    "entry_mode": {
+      "type": "string",
+      "enum": [
+        "questionnaire",
+        "file_driven"
+      ]
+    },
+    "task_type": {
+      "$ref": "#/$defs/task_type"
+    },
+    "task_type_secondary": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/task_type"
+      }
+    },
+    "task_type_confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "playbook": {
+      "type": "string",
+      "pattern": "^playbooks/PLAYBOOK_[A-Za-z0-9_-]+\\.md$"
+    },
+    "blocks": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^blocks/[A-Za-z0-9_-]+\\.md$"
+      }
+    },
+    "bootstrap_mode": {
+      "type": "string",
+      "enum": [
+        "new_project",
+        "existing_agent_wiki",
+        "recovery_needed"
+      ]
+    },
+    "bootstrap_tier": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "TASK",
+        "LITE",
+        "MAX",
+        null
+      ]
+    },
+    "daily_loop_file": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "core/PRINCIPLES_MINI.md",
+        null
+      ]
+    },
+    "role_mode": {
+      "type": "string",
+      "enum": [
+        "SOLO",
+        "DUAL",
+        "FULL"
+      ]
+    },
+    "strictness_score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "MUST equal the sum of strictness_breakdown scores; enforced by tools/validate_router_output.py"
+    },
+    "independence_score": {
+      "type": "integer",
+      "minimum": -15,
+      "maximum": 100,
+      "description": "MUST equal the sum of independence_breakdown scores; enforced by tools/validate_router_output.py"
+    },
+    "clarified_task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "goal",
+        "inputs",
+        "outputs",
+        "format",
+        "constraints",
+        "done_criteria",
+        "slot_sources"
+      ],
+      "properties": {
+        "goal": {
+          "type": "string"
+        },
+        "inputs": {
+          "type": "string"
+        },
+        "outputs": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "constraints": {
+          "type": "string"
+        },
+        "done_criteria": {
+          "type": "string"
+        },
+        "slot_sources": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "goal",
+            "inputs",
+            "outputs",
+            "format",
+            "constraints",
+            "done_criteria"
+          ],
+          "properties": {
+            "goal": {
+              "$ref": "#/$defs/slot_source"
+            },
+            "inputs": {
+              "$ref": "#/$defs/slot_source"
+            },
+            "outputs": {
+              "$ref": "#/$defs/slot_source"
+            },
+            "format": {
+              "$ref": "#/$defs/slot_source"
+            },
+            "constraints": {
+              "$ref": "#/$defs/slot_source"
+            },
+            "done_criteria": {
+              "$ref": "#/$defs/slot_source"
+            }
+          }
+        }
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "corpus_size_hint": {
+      "type": "string",
+      "enum": [
+        "unknown",
+        "small",
+        "medium",
+        "large",
+        "huge"
+      ]
+    },
+    "files_to_fetch": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/fetchable_file"
+      }
+    },
+    "do_not_fetch": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/fetchable_file"
+      }
+    },
+    "reason": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "independence_gap": {
+      "type": "boolean"
+    },
+    "next_action": {
+      "type": "string"
+    },
+    "strictness_breakdown": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9"
+      ],
+      "properties": {
+        "S1": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score",
+            "basis"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "enum": [
+                0,
+                5,
+                10
+              ]
+            },
+            "basis": {
+              "$ref": "#/$defs/criterion_basis"
+            }
+          }
+        },
+        "S2": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score",
+            "basis"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "enum": [
+                0,
+                8,
+                15
+              ]
+            },
+            "basis": {
+              "$ref": "#/$defs/criterion_basis"
+            }
+          }
+        },
+        "S3": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score",
+            "basis"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "enum": [
+                0,
+                5,
+                12,
+                20
+              ]
+            },
+            "basis": {
+              "$ref": "#/$defs/criterion_basis"
+            }
+          }
+        },
+        "S4": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score",
+            "basis"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "enum": [
+                0,
+                10,
+                25
+              ]
+            },
+            "basis": {
+              "$ref": "#/$defs/criterion_basis"
+            }
+          }
+        },
+        "S5": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score",
+            "basis"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "enum": [
+                0,
+                10,
+                25
+              ]
+            },
+            "basis": {
+              "$ref": "#/$defs/criterion_basis"
+            }
+          }
+        },
+        "S6": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score",
+            "basis"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "enum": [
+                0,
+                10,
+                20
+              ]
+            },
+            "basis": {
+              "$ref": "#/$defs/criterion_basis"
+            }
+          }
+        },
+        "S7": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score",
+            "basis"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "enum": [
+                0,
+                10,
+                20
+              ]
+            },
+            "basis": {
+              "$ref": "#/$defs/criterion_basis"
+            }
+          }
+        },
+        "S8": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score",
+            "basis"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "enum": [
+                0,
+                8,
+                15
+              ]
+            },
+            "basis": {
+              "$ref": "#/$defs/criterion_basis"
+            }
+          }
+        },
+        "S9": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score",
+            "basis"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "enum": [
+                0,
+                5,
+                10
+              ]
+            },
+            "basis": {
+              "$ref": "#/$defs/criterion_basis"
+            }
+          }
+        }
+      }
+    },
+    "independence_breakdown": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "I1",
+        "I2",
+        "I3",
+        "I4",
+        "I5",
+        "I6"
+      ],
+      "properties": {
+        "I1": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score",
+            "basis"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "enum": [
+                0,
+                10,
+                25
+              ]
+            },
+            "basis": {
+              "$ref": "#/$defs/criterion_basis"
+            }
+          }
+        },
+        "I2": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score",
+            "basis"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "enum": [
+                0,
+                15,
+                25
+              ]
+            },
+            "basis": {
+              "$ref": "#/$defs/criterion_basis"
+            }
+          }
+        },
+        "I3": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score",
+            "basis"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "enum": [
+                0,
+                15,
+                35
+              ]
+            },
+            "basis": {
+              "$ref": "#/$defs/criterion_basis"
+            }
+          }
+        },
+        "I4": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score",
+            "basis"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "enum": [
+                0,
+                10,
+                15
+              ]
+            },
+            "basis": {
+              "$ref": "#/$defs/criterion_basis"
+            }
+          }
+        },
+        "I5": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score",
+            "basis"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "enum": [
+                0,
+                5,
+                10
+              ]
+            },
+            "basis": {
+              "$ref": "#/$defs/criterion_basis"
+            }
+          }
+        },
+        "I6": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "score",
+            "basis"
+          ],
+          "properties": {
+            "score": {
+              "type": "integer",
+              "enum": [
+                -15,
+                0,
+                10
+              ]
+            },
+            "basis": {
+              "$ref": "#/$defs/criterion_basis"
+            }
+          }
+        }
+      }
+    },
+    "hard_overrides": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/hard_override"
+      },
+      "description": "Every triggered ROUTER hard override, declared structurally. Non-empty list forces bootstrap_tier=MAX for new_project; the four machine-derivable kinds must match the breakdown (S4=25, S5=25, S7=20, S3=20). Enforced by tools/validate_router_output.py"
+    }
+  },
+  "$defs": {
+    "task_type": {
+      "type": "string",
+      "enum": [
+        "build",
+        "analyze",
+        "research",
+        "write",
+        "review",
+        "operate",
+        "plan",
+        "other"
+      ]
+    },
+    "slot_source": {
+      "type": "string",
+      "enum": [
+        "stated",
+        "inferred",
+        "asked",
+        "assumed"
+      ]
+    },
+    "fetchable_file": {
+      "type": "string",
+      "pattern": "^(core|intake|playbooks|blocks|scenarios|orchestration|adapters|schemas|tools)/[A-Za-z0-9_./-]+\\.(md|json|py)$|^USER_PROFILE\\.md$"
+    },
+    "criterion_basis": {
+      "type": "string",
+      "enum": [
+        "stated",
+        "inferred",
+        "asked",
+        "assumed",
+        "profile"
+      ]
+    },
+    "hard_override": {
+      "type": "string",
+      "enum": [
+        "destructive_ops",
+        "high_stakes",
+        "db_api_writes_or_expensive",
+        "huge_corpus",
+        "user_strict_audit"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "bootstrap_mode": {
+            "const": "existing_agent_wiki"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "bootstrap_tier": {
+            "type": "null"
+          },
+          "daily_loop_file": {
+            "const": "core/PRINCIPLES_MINI.md"
+          },
+          "files_to_fetch": {
+            "contains": {
+              "const": "core/PRINCIPLES_MINI.md"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "bootstrap_mode": {
+            "const": "new_project"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "daily_loop_file": {
+            "type": "null"
+          },
+          "files_to_fetch": {
+            "not": {
+              "contains": {
+                "const": "core/PRINCIPLES_MINI.md"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "bootstrap_mode": {
+            "const": "recovery_needed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "daily_loop_file": {
+            "type": "null"
+          },
+          "bootstrap_tier": {
+            "const": "MAX"
+          },
+          "files_to_fetch": {
+            "allOf": [
+              {
+                "contains": {
+                  "const": "core/PRINCIPLES_MAX.md"
+                }
+              },
+              {
+                "not": {
+                  "contains": {
+                    "const": "core/PRINCIPLES_MINI.md"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "bootstrap_tier": {
+            "const": "TASK"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "files_to_fetch": {
+            "contains": {
+              "const": "core/TASK.md"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "bootstrap_tier": {
+            "const": "LITE"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "files_to_fetch": {
+            "contains": {
+              "const": "core/LITE.md"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "bootstrap_tier": {
+            "const": "MAX"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "files_to_fetch": {
+            "contains": {
+              "const": "core/PRINCIPLES_MAX.md"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "bootstrap_mode": {
+            "enum": [
+              "new_project"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "files_to_fetch": {
+            "contains": {
+              "pattern": "^playbooks/"
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "strictness_breakdown": {
+          "properties": {
+            "S4": {
+              "properties": {
+                "basis": {
+                  "not": {
+                    "const": "assumed"
+                  }
+                }
+              }
+            },
+            "S5": {
+              "properties": {
+                "basis": {
+                  "not": {
+                    "const": "assumed"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
