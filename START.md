@@ -1,260 +1,56 @@
-{
-  "toolkit_name": "agent-wiki-toolkit",
-  "distribution_version": "4.0.4",
-  "protocol_version": 4,
-  "router_version": 3,
-  "raw_base_url": "https://raw.githubusercontent.com/censortracker-del/toolkit_4v_full/main/",
-  "entry_point": "START.md",
-  "token_policy": "fetch MANIFEST.json first; fetch the entry set (entry_rules.always; orchestrated flows also entry_rules.orchestrated_flows_add); follow intake/ROUTER.md; then fetch only files_to_fetch; never fetch core/PRINCIPLES_MAX.md unless selected",
-  "core_purity_rule": "core/, intake/, blocks/, schemas/, START.md, MANIFEST.json are domain-agnostic; domain content lives only in playbooks/ and adapters/; agents must refuse to add domain content to core",
-  "machine_logic": {
-    "task_type": [
-      "build",
-      "analyze",
-      "research",
-      "write",
-      "review",
-      "operate",
-      "plan",
-      "other"
-    ],
-    "entry_mode": [
-      "questionnaire",
-      "file_driven"
-    ],
-    "bootstrap_mode": [
-      "new_project",
-      "existing_agent_wiki",
-      "recovery_needed"
-    ],
-    "bootstrap_tier": [
-      "TASK",
-      "LITE",
-      "MAX"
-    ],
-    "daily_loop_file": "core/PRINCIPLES_MINI.md",
-    "role_mode": [
-      "SOLO",
-      "DUAL",
-      "FULL"
-    ]
-  },
-  "task_type_map": {
-    "build": {
-      "playbook": "playbooks/PLAYBOOK_generic.md",
-      "planned": "playbooks/PLAYBOOK_code_tool.md"
-    },
-    "analyze": {
-      "playbook": "playbooks/PLAYBOOK_generic.md",
-      "planned": "playbooks/PLAYBOOK_sql_oracle.md, playbooks/PLAYBOOK_data_pipeline.md"
-    },
-    "research": {
-      "playbook": "playbooks/PLAYBOOK_generic.md",
-      "planned": "playbooks/PLAYBOOK_research_osint.md"
-    },
-    "write": {
-      "playbook": "playbooks/PLAYBOOK_generic.md",
-      "planned": "playbooks/PLAYBOOK_writing_docs.md"
-    },
-    "review": {
-      "playbook": "playbooks/PLAYBOOK_generic.md",
-      "planned": "playbooks/PLAYBOOK_hiring_eval.md"
-    },
-    "operate": {
-      "playbook": "playbooks/PLAYBOOK_generic.md"
-    },
-    "plan": {
-      "playbook": "playbooks/PLAYBOOK_generic.md"
-    },
-    "other": {
-      "playbook": "playbooks/PLAYBOOK_generic.md"
-    }
-  },
-  "entry_rules": {
-    "always": [
-      "USER_PROFILE.md",
-      "intake/ROUTER.md",
-      "intake/TASK_CLARIFIER.md"
-    ],
-    "files_repo_archive_or_uploads_add": [
-      "intake/ADAPTIVE_INTAKE.md",
-      "schemas/SOURCE_INVENTORY_SCHEMA.json"
-    ],
-    "note": "all routing LOGIC lives in intake/ROUTER.md; this manifest is a file map only",
-    "orchestrated_flows_add": [
-      "tools/validate_router_output.py",
-      "schemas/ROUTER_OUTPUT_SCHEMA.json"
-    ]
-  },
-  "rename_map": {
-    "note": "v4 lane-neutral naming; apply when creating NEW project files, even under pending_v4_rewrite core files",
-    "Claude_Inbox/": "Review_Inbox/",
-    "OPEN_Inbox/": "Audit_Inbox/",
-    "review_N.md": "audit_N.md",
-    "_claude_cursor.txt": "_review_cursor.txt",
-    "_opencode_cursor.txt": "_audit_cursor.txt",
-    "CLAUDE_CONTEXT": "AGENT_CONTEXT",
-    "CLAUDE_PROTOCOL_LINK": "PROTOCOL_LINK",
-    "needs_claude_review": "needs_review",
-    "needs_opencode_review": "needs_audit",
-    "opencode_scope": "audit_scope",
-    "roles": "Implementer / Reviewer / Auditor; vendor binding recorded per-project in Agent_Protocol.md as lane_binding",
-    "unchanged": "review_scope, feedback_N.md, deal_N.md, Change_Log.md, _index.tsv, entry_id keep their v3 names"
-  },
-  "files": {
-    "START.md": {
-      "type": "entry",
-      "purpose": "single paste-in bootstrap",
-      "status": "v4"
-    },
-    "README.md": {
-      "type": "human_entry",
-      "purpose": "human overview; must open with agent redirect to START.md",
-      "status": "v4"
-    },
-    "USER_PROFILE.md": {
-      "type": "profile",
-      "purpose": "durable intake defaults; fallback: ask all questions",
-      "status": "pending_v4_rewrite",
-      "note": "pending_v4_rewrite, but current content is valid for v4 routing defaults"
-    },
-    "intake/ROUTER.md": {
-      "type": "intake",
-      "purpose": "three-axis routing: task_type, tier, role_mode",
-      "status": "v4"
-    },
-    "intake/TASK_CLARIFIER.md": {
-      "type": "intake",
-      "purpose": "six-slot task specification",
-      "status": "v4"
-    },
-    "intake/ADAPTIVE_INTAKE.md": {
-      "type": "intake",
-      "purpose": "file-driven inspection door",
-      "status": "pending_v4_rewrite"
-    },
-    "core/TASK.md": {
-      "type": "core",
-      "purpose": "no-wiki execution shell, tier TASK",
-      "status": "v4"
-    },
-    "core/LITE.md": {
-      "type": "core",
-      "purpose": "low-risk project bootstrap, tier LITE",
-      "status": "v4"
-    },
-    "core/PRINCIPLES_MAX.md": {
-      "type": "core",
-      "purpose": "bootstrap/recovery/high-risk protocol, tier MAX",
-      "status": "v4"
-    },
-    "core/PRINCIPLES_MINI.md": {
-      "type": "core",
-      "purpose": "daily loop for deployed Agent_Wiki",
-      "status": "v4"
-    },
-    "playbooks/PLAYBOOK_generic.md": {
-      "type": "playbook",
-      "purpose": "universal task method; default for all task_types",
-      "status": "v4"
-    },
-    "blocks/": {
-      "type": "blocks",
-      "purpose": "shared discipline blocks (EVIDENCE, SAFETY, DATA_INTEGRITY, TOKEN_ECONOMY)",
-      "status": "planned"
-    },
-    "adapters/": {
-      "type": "adapters",
-      "purpose": "filled domain adapters, grow over time",
-      "status": "planned"
-    },
-    "schemas/ROUTER_OUTPUT_SCHEMA.json": {
-      "type": "schema",
-      "purpose": "router output validation",
-      "status": "v4"
-    },
-    "schemas/SOURCE_INVENTORY_SCHEMA.json": {
-      "type": "schema",
-      "purpose": "file-driven inventory validation",
-      "status": "pending_v4_rewrite"
-    },
-    "orchestration/AGENT_FETCH_PROMPT.md": {
-      "type": "orchestration",
-      "purpose": "API loader prompt",
-      "status": "pending_v4_rewrite"
-    },
-    "orchestration/API_ORCHESTRATION_SPEC.md": {
-      "type": "orchestration",
-      "purpose": "API orchestration spec",
-      "status": "pending_v4_rewrite"
-    },
-    "orchestration/MCP_INTEGRATION.md": {
-      "type": "optional_orchestration",
-      "purpose": "optional MCP rules",
-      "status": "pending_v4_rewrite"
-    },
-    "orchestration/STORAGE_RETRIEVAL_STRATEGY.md": {
-      "type": "optional_orchestration",
-      "purpose": "optional RAG strategy",
-      "status": "pending_v4_rewrite"
-    },
-    "scenarios/MANUAL_CHAT_HANDOFF.md": {
-      "type": "scenario",
-      "purpose": "manual cross-chat workflow",
-      "status": "pending_v4_rewrite"
-    },
-    "scenarios/API_SIMPLE_FLOW.md": {
-      "type": "scenario",
-      "purpose": "single-agent API scenario",
-      "status": "pending_v4_rewrite"
-    },
-    "scenarios/API_ORCHESTRATED_FLOW.md": {
-      "type": "scenario",
-      "purpose": "multi-agent API scenario",
-      "status": "pending_v4_rewrite"
-    },
-    "context/GPT_CONTEXT.md": {
-      "type": "context",
-      "purpose": "compact background for secondary agents",
-      "status": "pending_v4_rewrite"
-    },
-    "tools/validate_router_output.py": {
-      "type": "tool",
-      "purpose": "semantic validator for router output: breakdown sums, tier/role cuts, safety floor, mode consistency",
-      "status": "v4"
-    }
-  },
-  "removed_in_v4": {
-    "project_notes/BOOK_PROJECT_NOTES.md": "moved to the book project's own repo; legacy preserved at git tag v3.2",
-    "sha256_and_bytes_fields": "dropped; validation = path exists in files map; integrity via git",
-    "selection_rules": "merged into intake/ROUTER.md decision rules (single source of routing logic)"
-  },
-  "migration_state": {
-    "note": "batch 2 complete: core rename + schema v3 + README. Files marked pending_v4_rewrite follow v3 mechanics; agents apply rename_map for any NEW project files; legacy frozen at tag v3.2",
-    "done": [
-      "batch 1: START, ROUTER v3, TASK_CLARIFIER, core/TASK, PLAYBOOK_generic, MANIFEST v4",
-      "batch 2: core rename (MAX/MINI/LITE), neutral B1 demo adapter, ROUTER_OUTPUT_SCHEMA v3, README v4",
-      "b2.1: Codex review F1-F6 patched (schema breakdowns + recovery rule, lane_binding in §19/A8/B2/B3, rename_map scopes, A7/A8 prose)",
-      "b2.2: Codex round-2 F1-F4 fixed (prose basis enum, semantic validator, recovery MINI ban, §22 header)",
-      "b2.3: Codex round-3 F1-F4 fixed (validator reachable via fetch rules, fail-closed stdlib structural checks, hard overrides enforced, __pycache__ excluded)",
-      "b2.4: Codex round-4 F1-F3 fixed (structured hard_overrides[] in schema+ROUTER+validator, protocol const checks, full structural mirroring of do_not_fetch/blocks)",
-      "b2.5: Codex round-5 F1-F2 fixed (START/token_policy exempt routing infrastructure from only-files_to_fetch rule; stdlib mirrors uniqueItems and additionalProperties)",
-      "b2.6=4.0: Codex verdict SHIP on b2.5; post-ship P2 crash guard on slot_sources type",
-      "4.0.1: repo moved to toolkit_4v — raw_base_url switched; carried v3 files restored after migration loss",
-      "4.0.2: final home = toolkit_4v_full; raw_base_url updated",
-      "4.0.3: live-test UX patch — compact TASK output mode, S4 anchors reworded (new deliverables != destructive), TASK.md explicit allowance, USER_PROFILE validity note, example I4 assumption",
-      "4.0.4: Block-2 live-test patch — workspace anchoring hard rule (no cross-directory scavenging), continue-without-wiki must ask"
-    ],
-    "pending_batch_3": [
-      "playbooks (sql_oracle, research_osint, writing_docs)",
-      "blocks/ (EVIDENCE, SAFETY, DATA_INTEGRITY, TOKEN_ECONOMY)",
-      "adapters/ADAPTER_oracle_fns.md",
-      "intake/ADAPTIVE_INTAKE.md sync",
-      "scenarios/",
-      "orchestration/",
-      "context/GPT_CONTEXT.md (non-goals rewrite)",
-      "schemas/SOURCE_INVENTORY_SCHEMA.json (de-book enum, task_type)",
-      "USER_PROFILE.md touch-up"
-    ]
-  }
-}
+# START.md — Agent Wiki Toolkit v4 bootstrap
+
+`toolkit_version: 4.0-draft` · `protocol_version: 4`
+`raw_base_url: https://raw.githubusercontent.com/censortracker-del/toolkit_4v_full/main/`
+
+Paste this file into any AI agent (Claude / Codex / local model) together with the
+project idea. Nothing else is required from the user except the idea itself.
+
+You are the toolkit bootstrap agent. Your job: understand the user's task,
+clarify it, select the smallest sufficient toolkit files, assemble a runtime
+prompt, then execute the task under it.
+
+## Procedure
+
+1. Fetch `MANIFEST.json` from `raw_base_url`.
+   - No fetch capability / closed contour → ask the user to paste
+     `MANIFEST.json`, and later each selected file. NEVER improvise or
+     reconstruct toolkit files from memory.
+2. Fetch `USER_PROFILE.md` if listed. Apply its defaults; skip every question it
+   already answers.
+3. Fetch `intake/ROUTER.md` + `intake/TASK_CLARIFIER.md` and follow ROUTER
+   exactly: task_type classification → task clarification → risk & independence
+   scoring (inference-first) → tier + role_mode + `files_to_fetch`.
+   Orchestrated (API/scripted) flows also fetch MANIFEST
+   `entry_rules.orchestrated_flows_add` (`tools/validate_router_output.py` +
+   `schemas/ROUTER_OUTPUT_SCHEMA.json`) and run the validator on the router
+   JSON before any further fetching — fail closed.
+4. Fetch ONLY `files_to_fetch`. Nothing "just in case". The entry set from
+   steps 2–3 (incl. `orchestrated_flows_add`) is exempt — it is routing
+   infrastructure, not task material.
+5. Assemble the runtime prompt: runtime header (from ROUTER output) + selected
+   playbook + tier core file + blocks. Execute the user's task under it.
+
+## Hard rules
+
+- User-facing questions in the user's language (see USER_PROFILE; default RU).
+  Agent-facing files stay EN.
+- Ask ONLY questions that are missing or that can change a routing decision.
+  Batch them in one message; do not drip-feed.
+- Risk questions (destructive operations; data-loss / legal / financial /
+  submission stakes) may never be silently assumed "no". If the idea does not
+  make them explicit, ask.
+- No secrets in any prompt, file, log, or output.
+- **Workspace anchoring:** before creating or continuing a project, state the
+  absolute working directory and get the user's confirmation that it is the
+  intended project root. NEVER read, copy, or continue project state from
+  directories outside the confirmed root (parent, sibling, or previous task
+  folders). If expected files are missing at the root — stop and ask; do not
+  scavenge elsewhere.
+- **Core purity:** never write domain- or project-specific content into toolkit
+  core (`core/`, `intake/`, `blocks/`, `schemas/`, `START.md`, `MANIFEST.json`).
+  Domain knowledge goes only to `playbooks/` and `adapters/`, and only as a
+  proposal the user approves.
+- Files marked `pending_v4_rewrite` in MANIFEST are legacy v3: follow their
+  mechanics, but apply MANIFEST `rename_map` when creating any new project
+  files (lane-neutral names, protocol_version 4).
