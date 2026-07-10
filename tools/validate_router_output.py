@@ -150,13 +150,27 @@ def structural(o):
     _str_list(o, "blocks", f, BLOCK_RX, allow_empty=True, what="blocks/ path", unique=True)
     _str_list(o, "assumptions", f)
     _str_list(o, "reason", f)
-    if o.get("playbook") is not None and not PLAYBOOK_RX.match(str(o.get("playbook"))):
-        f.append(f"STRUCT: playbook={o.get('playbook')!r} invalid")
+    if not (isinstance(o.get("playbook"), str) and PLAYBOOK_RX.match(o["playbook"])):
+        f.append(f"STRUCT: playbook={o.get('playbook')!r} invalid — must be a playbooks/PLAYBOOK_*.md path")
     if "independence_gap" in o and not isinstance(o["independence_gap"], bool):
         f.append("STRUCT: independence_gap must be boolean")
     if "next_action" in o and (not isinstance(o["next_action"], str) or not o["next_action"].strip()):
         f.append("STRUCT: next_action must be a non-empty string")
     return f
+
+
+def manifest_paths():
+    """Try to locate MANIFEST.json near CWD/script; return set of known file paths or None."""
+    import os
+    for cand in ("MANIFEST.json", os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "MANIFEST.json")):
+        try:
+            with open(cand, encoding="utf-8") as fh:
+                m = json.load(fh)
+            if isinstance(m.get("files"), dict):
+                return set(m["files"].keys())
+        except Exception:
+            continue
+    return None
 
 
 def semantic(o):
@@ -174,6 +188,23 @@ def semantic(o):
         f.append(f"SUM: strictness_breakdown={ssum} != strictness_score={o.get('strictness_score')}")
     if isum != o.get("independence_score"):
         f.append(f"SUM: independence_breakdown={isum} != independence_score={o.get('independence_score')}")
+    smax = sum(max(v) for v in RUBRIC_S.values()); imax = sum(max(v) for v in RUBRIC_I.values())
+    if not (isinstance(o.get("strictness_score"), int) and 0 <= o["strictness_score"] <= smax):
+        f.append(f"RANGE: strictness_score must be int 0..{smax}")
+    if not (isinstance(o.get("independence_score"), int) and 0 <= o["independence_score"] <= imax):
+        f.append(f"RANGE: independence_score must be int 0..{imax}")
+
+    known = manifest_paths()
+    if known is not None:
+        for path in list(o.get("files_to_fetch", [])) + ([o["playbook"]] if isinstance(o.get("playbook"), str) else []):
+            if isinstance(path, str) and path not in known:
+                f.append(f"PATH: {path} not present in MANIFEST files map")
+    else:
+        print("note: MANIFEST.json not found nearby — path-existence checks skipped", file=sys.stderr)
+
+    # destructive requires audit lane or an explicit gap flag
+    if sc(sb, "S4") == 25 and (sc(ib, "I3") or 0) < 15 and o.get("independence_gap") is not True:
+        f.append("FLOOR: S4=25 (destructive) requires I3>=15 or independence_gap:true")
 
     # safety floor
     for k in ("S4", "S5"):

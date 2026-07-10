@@ -72,7 +72,7 @@ Rules:
    (user language) with key assumptions.
 7. Fetch `files_to_fetch`; assemble runtime prompt; hand off to execution.
 
-## Axis 1 — Strictness / Risk score (cap 100)
+## Axis 1 — Strictness / Risk score (theoretical max 160; tier cuts below)
 
 1. Project duration: one-off = 0 · days/weeks = 5 · months/long-running = 10
 2. Source volume/complexity: <20 items simple = 0 · 20–500 or mixed formats = 8 · 500+/DB/API/pipeline = 15
@@ -84,7 +84,7 @@ Rules:
 8. Contradictions / freshness / research uncertainty: stable = 0 · some = 8 · research/OSINT/legal/conflicting = 15
 9. Stakeholders / external use: private = 0 · shared/reused = 5 · submitted/published/decision-driving = 10
 
-## Axis 2 — Agent Independence score (cap 100)
+## Axis 2 — Agent Independence score (theoretical max 120; role cuts below)
 
 1. Implementation needed: none = 0 · files/reports = 10 · scripts/DB/API/destructive manifests = 25
 2. Semantic judgement: mechanical = 0 · classification/recommendation = 15 · architecture/legal/research meaning = 25
@@ -115,7 +115,7 @@ preference must never silently drop a high-stakes project down a role_mode tier.
 - strictness `0–14` → `TASK` — no Agent_Wiki; execute under
   `core/TASK.md` + playbook. One-shot work must not pay wiki overhead.
 - strictness `15–39` → `LITE`
-- strictness `40–100` → `MAX`
+- strictness `>= 40` → `MAX`
 
 Hard overrides to `MAX` regardless of score:
 
@@ -151,7 +151,10 @@ human summary (user language). Orchestrated flows
 MUST fetch `tools/validate_router_output.py` + `schemas/ROUTER_OUTPUT_SCHEMA.json`
 (MANIFEST `entry_rules.orchestrated_flows_add`) alongside this router and run the validator on this JSON (structural checks,
 sums, tier/role cuts, hard overrides, safety floor) — fail closed. In manual
-chat the agent self-applies the same checks before fetching.
+chat the agent self-applies the same checks before fetching — EXCEPT agents
+with shell access (CLI agents, Claude Code, Codex): they MUST fetch and run
+`tools/validate_router_output.py` on their JSON instead of self-applying;
+live testing showed self-checks miss rubric violations.
 
 ```json
 {

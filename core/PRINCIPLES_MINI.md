@@ -101,3 +101,5 @@ CUSTOMIZE PER PROJECT (only, via Agent_Protocol.md): lane_binding (which agent c
 domain safety rules; output types; language conventions (e.g. user-facing RU / agent-facing EN).
 Everything else fixed.
 ```
+
+**Flag closure rule:** any raised review/audit flag may only be closed as `satisfied` (verdict file in the inbox) or `waived_by_user` (explicit user decision recorded in Change_Log). Silently dropping a flag is a protocol violation.

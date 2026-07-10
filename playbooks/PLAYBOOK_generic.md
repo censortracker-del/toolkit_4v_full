@@ -71,3 +71,7 @@ inline result) + what was assumed + sensible next step.
   this file stays domain-free.
 - Output quality depends on independent review the current role_mode lacks →
   say so (`independence_gap`), suggest DUAL/FULL.
+
+## Execution economy
+- Ignore OS junk during any inventory or cleanup planning: `.DS_Store`, `__pycache__`, `Thumbs.db`, `~$*` lock files — never catalog, move, or delete them as project files.
+- Do not load heavy host skills (browser automation, image generation, etc.) unless the task explicitly requires them; prefer local structural checks for verifying static artifacts.

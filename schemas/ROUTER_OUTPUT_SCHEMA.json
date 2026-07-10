@@ -116,13 +116,13 @@
     "strictness_score": {
       "type": "integer",
       "minimum": 0,
-      "maximum": 100,
+      "maximum": 160,
       "description": "MUST equal the sum of strictness_breakdown scores; enforced by tools/validate_router_output.py"
     },
     "independence_score": {
       "type": "integer",
       "minimum": -15,
-      "maximum": 100,
+      "maximum": 120,
       "description": "MUST equal the sum of independence_breakdown scores; enforced by tools/validate_router_output.py"
     },
     "clarified_task": {

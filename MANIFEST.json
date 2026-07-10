@@ -1,6 +1,6 @@
 {
   "toolkit_name": "agent-wiki-toolkit",
-  "distribution_version": "4.0.4",
+  "distribution_version": "4.1",
   "protocol_version": 4,
   "router_version": 3,
   "raw_base_url": "https://raw.githubusercontent.com/censortracker-del/toolkit_4v_full/main/",
@@ -158,11 +158,6 @@
       "purpose": "universal task method; default for all task_types",
       "status": "v4"
     },
-    "blocks/": {
-      "type": "blocks",
-      "purpose": "shared discipline blocks (EVIDENCE, SAFETY, DATA_INTEGRITY, TOKEN_ECONOMY)",
-      "status": "planned"
-    },
     "adapters/": {
       "type": "adapters",
       "purpose": "filled domain adapters, grow over time",
@@ -222,6 +217,22 @@
       "type": "tool",
       "purpose": "semantic validator for router output: breakdown sums, tier/role cuts, safety floor, mode consistency",
       "status": "v4"
+    },
+    "CHANGELOG.md": {
+      "status": "v4",
+      "purpose": "release history (not fetched at runtime)"
+    },
+    "adapters/EXAMPLE_filled_adapter.md": {
+      "status": "v4",
+      "purpose": "filled adapter example (fetch on demand)"
+    },
+    "LICENSE": {
+      "status": "v4",
+      "purpose": "MIT license (not fetched at runtime)"
+    },
+    "LOCAL_PROFILE.md": {
+      "status": "v4",
+      "purpose": "condensed protocol for local-model System Prompts (~1.6k tokens); paste into preset, do not fetch at runtime"
     }
   },
   "removed_in_v4": {
@@ -230,31 +241,10 @@
     "selection_rules": "merged into intake/ROUTER.md decision rules (single source of routing logic)"
   },
   "migration_state": {
-    "note": "batch 2 complete: core rename + schema v3 + README. Files marked pending_v4_rewrite follow v3 mechanics; agents apply rename_map for any NEW project files; legacy frozen at tag v3.2",
-    "done": [
-      "batch 1: START, ROUTER v3, TASK_CLARIFIER, core/TASK, PLAYBOOK_generic, MANIFEST v4",
-      "batch 2: core rename (MAX/MINI/LITE), neutral B1 demo adapter, ROUTER_OUTPUT_SCHEMA v3, README v4",
-      "b2.1: Codex review F1-F6 patched (schema breakdowns + recovery rule, lane_binding in §19/A8/B2/B3, rename_map scopes, A7/A8 prose)",
-      "b2.2: Codex round-2 F1-F4 fixed (prose basis enum, semantic validator, recovery MINI ban, §22 header)",
-      "b2.3: Codex round-3 F1-F4 fixed (validator reachable via fetch rules, fail-closed stdlib structural checks, hard overrides enforced, __pycache__ excluded)",
-      "b2.4: Codex round-4 F1-F3 fixed (structured hard_overrides[] in schema+ROUTER+validator, protocol const checks, full structural mirroring of do_not_fetch/blocks)",
-      "b2.5: Codex round-5 F1-F2 fixed (START/token_policy exempt routing infrastructure from only-files_to_fetch rule; stdlib mirrors uniqueItems and additionalProperties)",
-      "b2.6=4.0: Codex verdict SHIP on b2.5; post-ship P2 crash guard on slot_sources type",
-      "4.0.1: repo moved to toolkit_4v — raw_base_url switched; carried v3 files restored after migration loss",
-      "4.0.2: final home = toolkit_4v_full; raw_base_url updated",
-      "4.0.3: live-test UX patch — compact TASK output mode, S4 anchors reworded (new deliverables != destructive), TASK.md explicit allowance, USER_PROFILE validity note, example I4 assumption",
-      "4.0.4: Block-2 live-test patch — workspace anchoring hard rule (no cross-directory scavenging), continue-without-wiki must ask"
-    ],
-    "pending_batch_3": [
-      "playbooks (sql_oracle, research_osint, writing_docs)",
-      "blocks/ (EVIDENCE, SAFETY, DATA_INTEGRITY, TOKEN_ECONOMY)",
-      "adapters/ADAPTER_oracle_fns.md",
-      "intake/ADAPTIVE_INTAKE.md sync",
-      "scenarios/",
-      "orchestration/",
-      "context/GPT_CONTEXT.md (non-goals rewrite)",
-      "schemas/SOURCE_INVENTORY_SCHEMA.json (de-book enum, task_type)",
-      "USER_PROFILE.md touch-up"
-    ]
+    "current": "4.1",
+    "history": "see CHANGELOG.md"
+  },
+  "planned": {
+    "blocks/": "shared discipline blocks (EVIDENCE, SAFETY, DATA_INTEGRITY, TOKEN_ECONOMY) — batch 3"
   }
 }

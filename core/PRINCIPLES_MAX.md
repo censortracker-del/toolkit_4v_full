@@ -341,32 +341,11 @@ language conventions: user-facing <RU/EN> / agent-facing EN
 
 The adapter is what makes one universal protocol deploy as a *specific* working system. Three parts: a filled reference (shows the form), a blank template (you copy it), and the adaptation rules + interview checklist (how to fill it for a new domain).
 
-## B1. Filled reference adapter — demo: kitten gallery website
+## B1. Filled reference adapter — example
 
-A complete example of a filled adapter for a small `build`-type project. It is a
-DEMO of adapter *shape* — deliberately toy, so nobody mistakes its values for
-protocol defaults. Use the structure, never the values.
-
-```md
-## Source of truth
-path: <PROJECT_ROOT>/content/   (kitten photos + profile texts; immutable; reasoning agents read-only)
-read-only to reasoning agents: yes
-
-## Domain adapter
-item definition: one kitten profile card (photo set + short text), identified by a stable internal id, NOT by file path.
-_index.tsv columns: id  name  status  needs_manual_review  last_processed_change_id
-counts tracked: kittens_total, drafted, published
-lifecycle statuses: raw, drafted, review_needed, published, archived
-domain safety rules:
-  - never delete/rename source photos without a dry-run manifest + explicit user confirm
-  - photo file path is metadata, never identity
-  - unverified facts about a kitten (age, breed, health) -> manual_review, never published as confirmed
-output types: one site page per kitten; a gallery index page; a publishing checklist report
-review triggers (review lane): site structure changes, page template logic, publishing criteria
-review triggers (audit lane): any file-output/deploy step, image-processing scripts, bulk renames
-language conventions: user-facing RU / agent-facing EN
-lane_binding: implement=<agent>, review=<agent>, audit=<agent>
-```
+A complete worked example lives in `adapters/EXAMPLE_filled_adapter.md`
+(moved out of core for core-purity). Fetch it only when you need a filled
+reference while writing a project adapter.
 
 ## B2. Blank adapter template
 
@@ -419,3 +398,5 @@ Rules:
 * Fill all 12 before creating files. Missing answer → ask, don't invent.
 * As you instantiate new domains, save each filled adapter into the toolkit's `adapters/` directory as `adapters/ADAPTER_<domain>.md` — as a PROPOSAL the user approves (core purity: agents never silently edit the toolkit). Do NOT inline domain adapters into this core body; the body holds only the toy B1 demo as the canonical form example.
 * The filled adapter becomes the project's `Agent_Protocol.md` (Appendix A8), the project-local schema.
+
+**Flag closure rule:** any raised review/audit flag may only be closed as `satisfied` (verdict file in the inbox) or `waived_by_user` (explicit user decision recorded in Change_Log). Silently dropping a flag is a protocol violation.

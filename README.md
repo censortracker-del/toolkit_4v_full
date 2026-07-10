@@ -67,3 +67,9 @@ v3 (vendor role names, book-project legacy) is frozen at git tag `v3.2`.
 v4 = lane-neutral naming, task_type axis, TASK tier, playbooks/adapters layer,
 core purity rule. Files marked `pending_v4_rewrite` in `MANIFEST.json` still
 follow v3 mechanics; agents apply `rename_map` when creating new project files.
+
+## When this toolkit earns its keep (and when it does not)
+
+Built for: cold API/chat agents and local models without host scaffolding; multi-session projects that need persistent memory; risky operations that need a dry-run + confirmation floor; multi-agent implement/review/audit chains. If your host platform already provides intake, planning and verification AND the task is one-shot and low-risk — skip the toolkit and keep only its red lines. The router itself will tell you the same (TASK tier).
+
+**Local models:** paste `LOCAL_PROFILE.md` into your local model's System Prompt (LM Studio preset) instead of bootstrapping via tools — condensed protocol, ~1.6k tokens.
