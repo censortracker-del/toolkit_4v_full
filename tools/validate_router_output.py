@@ -189,22 +189,30 @@ def semantic(o):
     if isum != o.get("independence_score"):
         f.append(f"SUM: independence_breakdown={isum} != independence_score={o.get('independence_score')}")
     smax = sum(max(v) for v in RUBRIC_S.values()); imax = sum(max(v) for v in RUBRIC_I.values())
-    if not (isinstance(o.get("strictness_score"), int) and 0 <= o["strictness_score"] <= smax):
-        f.append(f"RANGE: strictness_score must be int 0..{smax}")
-    if not (isinstance(o.get("independence_score"), int) and 0 <= o["independence_score"] <= imax):
-        f.append(f"RANGE: independence_score must be int 0..{imax}")
+    smin = sum(min(v) for v in RUBRIC_S.values()); imin = sum(min(v) for v in RUBRIC_I.values())
+    if not (isinstance(o.get("strictness_score"), int) and smin <= o["strictness_score"] <= smax):
+        f.append(f"RANGE: strictness_score must be int {smin}..{smax}")
+    if not (isinstance(o.get("independence_score"), int) and imin <= o["independence_score"] <= imax):
+        f.append(f"RANGE: independence_score must be int {imin}..{imax}")
 
     known = manifest_paths()
     if known is not None:
-        for path in list(o.get("files_to_fetch", [])) + ([o["playbook"]] if isinstance(o.get("playbook"), str) else []):
+        for path in (list(o.get("files_to_fetch", [])) + list(o.get("do_not_fetch", []))
+                     + list(o.get("blocks", []))
+                     + ([o["playbook"]] if isinstance(o.get("playbook"), str) else [])):
             if isinstance(path, str) and path not in known:
                 f.append(f"PATH: {path} not present in MANIFEST files map")
     else:
-        print("note: MANIFEST.json not found nearby — path-existence checks skipped", file=sys.stderr)
+        f.append("PATH: MANIFEST.json not found — cannot verify paths (fail closed)")
 
     # destructive requires audit lane or an explicit gap flag
-    if sc(sb, "S4") == 25 and (sc(ib, "I3") or 0) < 15 and o.get("independence_gap") is not True:
-        f.append("FLOOR: S4=25 (destructive) requires I3>=15 or independence_gap:true")
+    for crit, label in (("S4", "destructive"), ("S5", "high stakes")):
+        if sc(sb, crit) == 25 and (sc(ib, "I3") or 0) < 15 and o.get("independence_gap") is not True:
+            f.append(f"FLOOR: {crit}=25 ({label}) requires I3>=15 or independence_gap:true")
+    for crit in ("S4", "S5"):
+        v = sb.get(crit) if isinstance(sb.get(crit), dict) else {}
+        if v.get("score") == 0 and v.get("basis") not in ("stated", "asked"):
+            f.append(f"FLOOR: {crit}=0 requires basis stated|asked (got {v.get('basis')!r}) — risk absence must be stated or asked, never inferred")
 
     # safety floor
     for k in ("S4", "S5"):

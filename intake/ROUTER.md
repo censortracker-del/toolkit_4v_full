@@ -129,7 +129,9 @@ Every triggered override MUST also be declared in the `hard_overrides[]`
 output field (`destructive_ops` | `high_stakes` | `db_api_writes_or_expensive`
 | `huge_corpus` | `user_strict_audit`). The validator forces MAX whenever the
 list is non-empty and cross-checks the four machine-derivable kinds against
-the breakdown; `user_strict_audit` is the structured channel for the
+the breakdown. S4/S5 = 0 is only valid with basis `stated` or `asked` —
+absence of risk must be stated by the user or asked about, never inferred.
+`user_strict_audit` is the structured channel for the
 user-requested case — do not leave it only as free text in `reason[]`.
 
 A `TASK`-tier result with duration = months (criterion 1 = 10) is suspicious:

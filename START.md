@@ -7,7 +7,7 @@ one-shot, low-risk, with no multi-session memory needs. This repository is
 the protocol, NOT the workspace: do all project work in the user's own
 project folder, never inside a clone of this repo.
 
-`toolkit_version: 4.1` · `protocol_version: 4`
+`toolkit_version: 4.1.1` · `protocol_version: 4`
 `raw_base_url: https://raw.githubusercontent.com/censortracker-del/toolkit_4v_full/main/`
 
 Paste this file into any AI agent (Claude / Codex / local model) together with the

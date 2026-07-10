@@ -1,6 +1,6 @@
 {
   "toolkit_name": "agent-wiki-toolkit",
-  "distribution_version": "4.1",
+  "distribution_version": "4.1.1",
   "protocol_version": 4,
   "router_version": 3,
   "raw_base_url": "https://raw.githubusercontent.com/censortracker-del/toolkit_4v_full/main/",
@@ -241,7 +241,7 @@
     "selection_rules": "merged into intake/ROUTER.md decision rules (single source of routing logic)"
   },
   "migration_state": {
-    "current": "4.1",
+    "current": "4.1.1",
     "history": "see CHANGELOG.md"
   },
   "planned": {

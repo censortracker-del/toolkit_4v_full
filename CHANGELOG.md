@@ -13,3 +13,5 @@
 - 4.0.3: live-test UX patch — compact TASK output mode, S4 anchors reworded (new deliverables != destructive), TASK.md explicit allowance, USER_PROFILE validity note, example I4 assumption
 - 4.0.4: Block-2 live-test patch — workspace anchoring hard rule (no cross-directory scavenging), continue-without-wiki must ask
 - 4.1: validator hardening (null playbook, score ranges, destructive->audit floor, MANIFEST path check), untrusted-file-contents rule, SHA-pinned fetching, skip-note + positioning, flag closure rule, OS-junk & heavy-skills economy, filled-adapter example moved to adapters/, history moved to CHANGELOG, LICENSE added
+- 4.1.1: validator contract fixes (Sol review round 2) — S5=25 audit floor; S4/S5=0 require basis stated|asked; independence range honors negative I6 (-15); MANIFEST membership extended to do_not_fetch and blocks; missing MANIFEST now fail-closed.
+  Known limitations during the 2-week observation window: file-driven ADAPTIVE_INTAKE still on v3 contract (no TASK support, legacy schema) — queued as roadmap item 10.
